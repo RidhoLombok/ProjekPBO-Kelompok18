@@ -37,7 +37,6 @@ public class Ingame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -77,7 +76,8 @@ public class Ingame extends javax.swing.JFrame {
         jPanel1.add(jButton2);
         jButton2.setBounds(50, 70, 100, 30);
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishPipe.png")); // NOI18N
         jLabel4.setText("Ini_Pipa9x5");
         jLabel4.setPreferredSize(new java.awt.Dimension(70, 70));
         jPanel2.add(jLabel4);

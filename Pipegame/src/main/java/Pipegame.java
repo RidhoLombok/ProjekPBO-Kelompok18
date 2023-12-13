@@ -9,6 +9,15 @@
 public class Pipegame {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MainMenu MainMenu = new MainMenu();
+        MainMenu.setVisible(true);
+        MainMenu.pack();
+        MainMenu.setLocationRelativeTo(null);
+        //this.dispose();
+        //Register register = new Register();
+        //register.setVisible(true);
+        //register.pack();
+        //register.setLocationRelativeTo(null);
+        //this.dispose();
     }
 }

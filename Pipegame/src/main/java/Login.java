@@ -90,7 +90,7 @@ public class Login extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Gill Sans MT", 0, 14)); // NOI18N
         jLabel5.setText("Belum punya akun? ");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(50, 170, 120, 16);
+        jLabel5.setBounds(40, 170, 130, 16);
 
         jButton2.setFont(new java.awt.Font("Gill Sans MT", 1, 12)); // NOI18N
         jButton2.setText("Register");
@@ -100,7 +100,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2);
-        jButton2.setBounds(170, 170, 80, 20);
+        jButton2.setBounds(170, 170, 90, 20);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,7 +129,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        Register register = new Register();
+        register.setVisible(true);
+        register.pack();
+        register.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
