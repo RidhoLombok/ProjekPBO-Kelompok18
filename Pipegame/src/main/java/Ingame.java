@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.awt.event.*;
+
+import java.util.Random;
 /**
  *
  * @author LENOVO
@@ -13,6 +18,11 @@ public class Ingame extends javax.swing.JFrame {
      * Creates new form Ingame
      */
     public Ingame() {
+        initComponents();
+    }
+    String jenisLevel;
+    public Ingame(String jenisLevel) {
+        this.jenisLevel=jenisLevel;
         initComponents();
     }
 
@@ -31,8 +41,8 @@ public class Ingame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        JLabel pipa[] = new JLabel[45];
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -75,15 +85,91 @@ public class Ingame extends javax.swing.JFrame {
         });
         jPanel1.add(jButton2);
         jButton2.setBounds(50, 70, 100, 30);
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishPipe.png")); // NOI18N
-        jLabel4.setText("Ini_Pipa9x5");
-        jLabel4.setPreferredSize(new java.awt.Dimension(70, 70));
-        jPanel2.add(jLabel4);
+        for(int i=0;i<45;i++){
+            String png = ""; String text = "";
+            if(i==0){
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\startPipe.png";
+                text = "start";
+            }else if(i==44){
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishPipe.png";
+                text = "finish";
+            }
+            else if(jenisLevel=="Level1"){
+                if((i>=41 && i<=43) || (i>=1 && i<=3) ){
+                    png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\horPipe.png";
+                    text = "hor";
+                }else if(i==13 || i==22 || i==31){
+                    png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\verPipe.png";
+                    text = "ver";
+                }else if(i==4){
+                    png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LDPipe.png";
+                    text = "LD";
+                }else if(i==40){
+                    png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RUPipe.png";
+                    text = "RU";
+                }else{
+                    png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\whiteWall.png";
+                    text = "wall";
+                }
+            }
+            else if(jenisLevel=="Randomizer"){
+                Random rand = new Random();
+                int random = rand.nextInt(2);
+                if(random==1){
+                    random = rand.nextInt(2);
+                    if(random==1){
+                        png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\verPipe.png";
+                        text = "ver";
+                    }else{
+                        png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\horPipe.png";
+                        text = "hor";
+                    }
+                }
+                else{
+                    random = rand.nextInt(4);
+                    if(random==1){
+                        png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RDPipe.png";
+                        text = "RD";
+                    }else if(random==2){
+                        png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LDPipe.png";
+                        text = "LD";
+                    }else if(random==3){
+                        png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LUPipe.png";
+                        text = "LU";
+                    }else{
+                        png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RUPipe.png";
+                        text = "RU";
+                    }
+                }
+            }
+            pipa[i] = new javax.swing.JLabel();
+            pipa[i].setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            pipa[i].setIcon(new javax.swing.ImageIcon(png)); // NOI18N
+            final int j = i;
+            pipa[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(pipa[j].getText()=="ver"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\horPipe.png"));
+                        pipa[j].setText("hor");
+                    }
+                    else if(pipa[j].getText()=="hor"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\verPipe.png"));
+                        pipa[j].setText("ver");
+                    }
+                    else{
+                        
+                    }
+                }
+            });
+            pipa[i].setText(text);
+            pipa[i].setPreferredSize(new java.awt.Dimension(70, 70));
+            jPanel2.add(pipa[i]);
+        }
+        
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(50, 140, 700, 420);
+        jPanel2.setBounds(50, 140, 680, 380);
 
         jLabel3.setFont(new java.awt.Font("Gill Sans MT", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -108,11 +194,23 @@ public class Ingame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, "Apakah anda yakin ingin keluar?", "Keluar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+    
+    if(jawab == JOptionPane.YES_OPTION){
+        MainMenu MainMenu = new MainMenu();
+        MainMenu.setVisible(true);
+        MainMenu.pack();
+        MainMenu.setLocationRelativeTo(null);
+        this.dispose();
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        Ingame Ingame = new Ingame(jenisLevel);
+        Ingame.setVisible(true);
+        Ingame.pack();
+        Ingame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -156,8 +254,8 @@ public class Ingame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private JLabel pipa[];
     // End of variables declaration//GEN-END:variables
 }

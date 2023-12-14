@@ -51,6 +51,11 @@ public class LevelMenu extends javax.swing.JFrame {
         jButton2.setBackground(new java.awt.Color(0, 204, 255));
         jButton2.setFont(new java.awt.Font("Gill Sans MT", 1, 32)); // NOI18N
         jButton2.setText("Randomizer");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
         jButton2.setBounds(70, 200, 260, 60);
 
@@ -75,8 +80,20 @@ public class LevelMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        Ingame Ingame = new Ingame("Level1");
+        Ingame.setVisible(true);
+        Ingame.pack();
+        Ingame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Ingame Ingame = new Ingame("Randomizer");
+        Ingame.setVisible(true);
+        Ingame.pack();
+        Ingame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
