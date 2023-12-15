@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -127,12 +132,37 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JOptionPane.showMessageDialog(this, "Anda Berhasil Login");
-        MainMenu MainMenu = new MainMenu();
-        MainMenu.setVisible(true);
-        MainMenu.pack();
-        MainMenu.setLocationRelativeTo(null);
-        this.dispose();
+        try{
+            if(jTextField1.getText().length()==0){
+                JOptionPane.showMessageDialog(this, "Username belum diisi","Perhatian",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            int ketemu = 0; int id = 0; String password = "";
+            String query = "SELECT * FROM user WHERE username = '"+jTextField1.getText()+"'";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()){
+                password = rs.getString("password");
+                id = rs.getInt("id");
+                ketemu = 1;
+            }
+            if(password.equals(new String(jPasswordField1.getPassword())) && ketemu == 1){
+                JOptionPane.showMessageDialog(this, "Anda Berhasil Login");
+                MainMenu MainMenu = new MainMenu(id);
+                MainMenu.setVisible(true);
+                MainMenu.pack();
+                MainMenu.setLocationRelativeTo(null);
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Password salah atau username tidak ditemukan","Perhatian",JOptionPane.WARNING_MESSAGE);
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

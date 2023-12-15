@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -10,11 +15,28 @@ import javax.swing.JOptionPane;
  * @author LENOVO
  */
 public class MainMenu extends javax.swing.JFrame {
-
+    private int id;
+    private String username;
     /**
      * Creates new form MainMenu
      */
     public MainMenu() {
+        initComponents();
+    }
+    public MainMenu(int id) {
+        this.id=id;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM user WHERE id = '"+id+"'";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()){
+                username = rs.getString("username");
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
         initComponents();
     }
 
@@ -53,7 +75,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Gill Sans MT", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Halo nama_user! selamat datang di");
+        jLabel2.setText("Halo "+username+"! selamat datang di");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(170, 20, 460, 30);
 
@@ -103,7 +125,7 @@ public class MainMenu extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Gill Sans MT", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("Project yang dibuat oleh anggota kelompok 17 Proyek Pemrograman Beorientasi Objek!!");
+        jLabel3.setText("Project yang dibuat oleh anggota kelompok 18 Proyek Pemrograman Beorientasi Objek!!");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(130, 470, 670, 30);
 
@@ -122,7 +144,7 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        LevelMenu LevelMenu = new LevelMenu();
+        LevelMenu LevelMenu = new LevelMenu(id);
         LevelMenu.setVisible(true);
         LevelMenu.pack();
         LevelMenu.setLocationRelativeTo(null);
@@ -132,7 +154,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         int jawab = JOptionPane.showOptionDialog(this, "Apakah anda ingin logout?", "Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
         if(jawab == JOptionPane.YES_OPTION){
-            JOptionPane.showMessageDialog(this, "Berhasil! Silahkan Login.");
+            JOptionPane.showMessageDialog(this, "Berhasil! Sampai Jumpa :D");
             Login login = new Login();
             login.setVisible(true);
             login.pack();
@@ -142,7 +164,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Leaderboard Leaderboard = new Leaderboard();
+        Leaderboard Leaderboard = new Leaderboard(id);
         Leaderboard.setVisible(true);
         Leaderboard.pack();
         Leaderboard.setLocationRelativeTo(null);
@@ -150,7 +172,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Profile Profile = new Profile();
+        Profile Profile = new Profile(id);
         Profile.setVisible(true);
         Profile.pack();
         Profile.setLocationRelativeTo(null);

@@ -8,11 +8,15 @@
  * @author LENOVO
  */
 public class LevelMenu extends javax.swing.JFrame {
-
+    private int id;
     /**
      * Creates new form LevelMenu
      */
     public LevelMenu() {
+        initComponents();
+    }
+    public LevelMenu(int id) {
+        this.id = id;
         initComponents();
     }
 
@@ -80,7 +84,7 @@ public class LevelMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Ingame Ingame = new Ingame("Level 1");
+        Ingame Ingame = new Ingame("Level 1",id);
         Ingame.setVisible(true);
         Ingame.pack();
         Ingame.setLocationRelativeTo(null);
@@ -88,7 +92,7 @@ public class LevelMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Ingame Ingame = new Ingame("Randomizer");
+        Ingame Ingame = new Ingame("Randomizer",id);
         Ingame.setVisible(true);
         Ingame.pack();
         Ingame.setLocationRelativeTo(null);

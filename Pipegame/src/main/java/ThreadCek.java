@@ -1,19 +1,21 @@
 import javax.swing.JLabel;
 
 public class ThreadCek extends Thread{
-    Ingame Ingame;
-    static int count = 0;
-    public ThreadCek(Ingame Ingame){
-        this.Ingame=Ingame;
+    private Ingame ingame;
+    private static int count = 0;
+    public ThreadCek(Ingame ingame){
+        this.ingame=ingame;
     }
     public static void setCount(){
         count=0;
     }
     public void run(){
         JLabel pipa[] = new JLabel[45];
-        JLabel current,currentB;
+        JLabel current, currentB;
+        int panjang = 0;
         boolean ketemu = false;
-        while (ketemu!=true) {
+        while (ketemu!=true && Ingame.isThreadOn()) {
+            panjang = 0;
             int currentNumber = 0;
             int currentBNumber = 0;
             pipa = Ingame.getallpipa();
@@ -147,19 +149,21 @@ public class ThreadCek extends Thread{
                 }else if(current.getText()=="wall"){
                     break;
                 }
+                panjang++;
             }
-            
             
             try{
                 Thread.sleep(100);
             }catch(Exception e) {
             }
         }
-        Ingame.setThreadOn(false);
-        count++;
-        Ingame.dispose();
-        if(count==1){
-            Ingame.menang();
+        if(Ingame.isThreadOn()){
+            Ingame.setThreadOn(false);
+            count++;
+            ingame.dispose();
+            if(count==1){
+                ingame.menang(panjang);
+            }
         }
         //System.out.println("count "+ count);memastikan semua thread mati
     }

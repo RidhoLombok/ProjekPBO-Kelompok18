@@ -3,16 +3,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 /**
  *
  * @author LENOVO
  */
 public class Profile extends javax.swing.JFrame {
-
+    private int id, jmain, jmenang, jkalah, rlevel;
+    private String username;
     /**
      * Creates new form Profile
      */
     public Profile() {
+        initComponents();
+    }
+    public Profile(int id){
+        this.id=id;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            String query = "SELECT * FROM user,profil WHERE user.id = '"+id+"'";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()){
+                username = rs.getString("username");
+                jmain = rs.getInt("jmain");
+                jmenang = rs.getInt("jmenang");
+                jkalah = rs.getInt("jkalah");
+                rlevel = rs.getInt("rlevel");
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
         initComponents();
     }
 
@@ -71,13 +97,13 @@ public class Profile extends javax.swing.JFrame {
         jLabel6.setBounds(40, 220, 160, 30);
 
         jLabel8.setFont(new java.awt.Font("Gill Sans MT", 0, 24)); // NOI18N
-        jLabel8.setText("Nama              :");
+        jLabel8.setText("Username        :");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(40, 60, 160, 30);
 
         jButton1.setBackground(new java.awt.Color(0, 204, 255));
         jButton1.setFont(new java.awt.Font("Gill Sans MT", 1, 14)); // NOI18N
-        jButton1.setLabel("Kembali");
+        jButton1.setText("Kembali");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -88,31 +114,31 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Gill Sans MT", 0, 24)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Nama_User");
+        jLabel9.setText(username);
         jPanel1.add(jLabel9);
         jLabel9.setBounds(210, 60, 150, 30);
 
         jLabel10.setFont(new java.awt.Font("Gill Sans MT", 0, 24)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("1");
+        jLabel10.setText(""+rlevel);
         jPanel1.add(jLabel10);
         jLabel10.setBounds(210, 100, 150, 30);
 
         jLabel11.setFont(new java.awt.Font("Gill Sans MT", 0, 24)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("20");
+        jLabel11.setText(""+jmain);
         jPanel1.add(jLabel11);
         jLabel11.setBounds(210, 140, 150, 30);
 
         jLabel12.setFont(new java.awt.Font("Gill Sans MT", 0, 24)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("12");
+        jLabel12.setText(""+jmenang);
         jPanel1.add(jLabel12);
         jLabel12.setBounds(210, 180, 150, 30);
 
         jLabel13.setFont(new java.awt.Font("Gill Sans MT", 0, 24)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("8");
+        jLabel13.setText(""+jkalah);
         jPanel1.add(jLabel13);
         jLabel13.setBounds(210, 220, 150, 30);
 
@@ -131,7 +157,7 @@ public class Profile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        MainMenu MainMenu = new MainMenu();
+        MainMenu MainMenu = new MainMenu(id);
         MainMenu.setVisible(true);
         MainMenu.pack();
         MainMenu.setLocationRelativeTo(null);

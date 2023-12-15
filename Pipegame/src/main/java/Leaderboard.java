@@ -3,17 +3,81 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JLabel;
+
 /**
  *
  * @author LENOVO
  */
 public class Leaderboard extends javax.swing.JFrame {
-
+    int id;
     /**
      * Creates new form Leaderboard
      */
     public Leaderboard() {
         initComponents();
+    }
+    public Leaderboard(int id) {
+        this.id = id;
+        int i = 0;
+        int level1Count = 0;
+        int randomizerCount = 0;
+        int score[] = new int[13];
+        int scoreR[] = new int[13];
+        String username[] = new String[13];
+        String usernameR[] = new String[13];
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            String query = "SELECT username,nilai FROM record, user WHERE user.id = record.id AND jenislevel = 'Level 1' ORDER BY nilai DESC limit 13";
+            ResultSet rs = st.executeQuery(query);
+            while(rs.next()){
+                username[i] = rs.getString("username");
+                score[i] = rs.getInt("nilai");
+                i++;
+            }
+            level1Count = i;
+            i = 0;
+            query = "SELECT username,nilai FROM record, user WHERE user.id = record.id AND jenislevel = 'Randomizer' ORDER BY nilai DESC limit 13";
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                usernameR[i] = rs.getString("username");
+                scoreR[i] = rs.getInt("nilai");
+                i++;
+            }
+            randomizerCount = i;
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
+        initComponents();
+
+        JLabel[] topLevel1 = new JLabel[13];
+        JLabel[] topRandomizer = new JLabel[13];
+
+        for(i=0;i<level1Count;i++){
+            topLevel1[i] = new javax.swing.JLabel();
+            topLevel1[i].setFont(new java.awt.Font("Gill Sans MT", 1, 14)); // NOI18N
+            topLevel1[i].setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            topLevel1[i].setText(i+1+". "+username[i]+" | "+score[i]+"");
+            topLevel1[i].setPreferredSize(new java.awt.Dimension(200, 17));
+            jPanel4.add(topLevel1[i]);
+        }
+        for(i=0;i<randomizerCount;i++){
+            topRandomizer[i] = new javax.swing.JLabel();
+            topRandomizer[i].setFont(new java.awt.Font("Gill Sans MT", 1, 14)); // NOI18N
+            topRandomizer[i].setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+            topRandomizer[i].setText(i+1+". "+usernameR[i]+" | "+scoreR[i]+"");
+            topRandomizer[i].setPreferredSize(new java.awt.Dimension(200, 17));
+            jPanel5.add(topRandomizer[i]);
+        }
     }
 
     /**
@@ -31,9 +95,8 @@ public class Leaderboard extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(500, 400));
@@ -70,22 +133,10 @@ public class Leaderboard extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(20, 20, 80, 22);
-
-        jLabel4.setFont(new java.awt.Font("Gill Sans MT", 1, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("Nama_user+waktu+score13");
-        jLabel4.setPreferredSize(new java.awt.Dimension(200, 16));
-        jPanel4.add(jLabel4);
+        jButton1.setBounds(20, 20, 90, 22); 
 
         jPanel1.add(jPanel4);
         jPanel4.setBounds(20, 90, 220, 290);
-
-        jLabel5.setFont(new java.awt.Font("Gill Sans MT", 1, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel5.setText("Nama_user+waktu+scoremax");
-        jLabel5.setPreferredSize(new java.awt.Dimension(200, 16));
-        jPanel5.add(jLabel5);
 
         jPanel1.add(jPanel5);
         jPanel5.setBounds(260, 90, 220, 290);
@@ -109,7 +160,7 @@ public class Leaderboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        MainMenu MainMenu = new MainMenu();
+        MainMenu MainMenu = new MainMenu(id);
         MainMenu.setVisible(true);
         MainMenu.pack();
         MainMenu.setLocationRelativeTo(null);
@@ -156,8 +207,6 @@ public class Leaderboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

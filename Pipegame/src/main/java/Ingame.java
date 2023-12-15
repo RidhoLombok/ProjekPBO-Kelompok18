@@ -6,6 +6,9 @@
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.Random;
 /**
@@ -13,12 +16,13 @@ import java.util.Random;
  * @author LENOVO
  */
 public class Ingame extends javax.swing.JFrame {
+    private int id;
     private String jenisLevel;
     private static int putaran = 0;
     private static double waktu = 0.0;
     private static boolean threadOn = false;
-    static DecimalFormat decimalFormat = new DecimalFormat("0.0");
-    static JLabel pipa[] = new JLabel[45];
+    private static DecimalFormat decimalFormat = new DecimalFormat("0.0");
+    private static JLabel pipa[] = new JLabel[45];
     public static double getWaktu() {
         return waktu;
     }
@@ -72,29 +76,43 @@ public class Ingame extends javax.swing.JFrame {
     public static JLabel[] getallpipa(){
         return pipa;
     }
-    public void menang(){
-        JOptionPane.showMessageDialog(this, "Anda Menang");
+    public void menang(int panjang){
+        int nilai = 10000 + putaran*(-100)+panjang*250+(int)Math.round(waktu*-50);//setiap putaran - 100, panjang pipa +250, dan waktu/detik -50
+        JOptionPane.showMessageDialog(this, "Anda Menang dengan score "+nilai);
         ThreadCek.setCount();
-        int jawab = JOptionPane.showOptionDialog(this, "Apakah anda ingin mengulanginya?", "Main lagi?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-        if(jawab == JOptionPane.YES_OPTION){
-            //disini code untuk menyimpan record saat ulang
-            putaran = 0;
-            waktu = 0;
-            Ingame Ingame = new Ingame(jenisLevel);
-            Ingame.setVisible(true);
-            Ingame.pack();
-            Ingame.setLocationRelativeTo(null);
-            this.dispose();
-        }
-        else{
-            //disini code untuk menyimpan record saat keluar
-            putaran = 0;
-            waktu = 0;
-            MainMenu MainMenu = new MainMenu();
-            MainMenu.setVisible(true);
-            MainMenu.pack();
-            MainMenu.setLocationRelativeTo(null);
-            this.dispose();
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            String query = "INSERT INTO record(id,jenislevel,putaran,waktu,ppipa,nilai) VALUES ('"+id+"','"+jenisLevel+"','"+putaran+"','"+decimalFormat.format(waktu)+"','"+panjang+"','"+nilai+"')";
+            st.executeUpdate(query);
+            query = "UPDATE profil SET jmain = jmain + 1 , jmenang = jmenang + 1 WHERE id = '"+id+"'";
+            st.executeUpdate(query);
+            if(jenisLevel == "Level 1"){
+                query = "UPDATE profil SET rlevel = 1 WHERE id = '"+id+"'";
+                st.executeUpdate(query);
+            }
+            int jawab = JOptionPane.showOptionDialog(this, "Apakah anda ingin mengulanginya?", "Main lagi?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if(jawab == JOptionPane.YES_OPTION){
+                putaran = 0;
+                waktu = 0;
+                Ingame Ingame = new Ingame(jenisLevel,id);
+                Ingame.setVisible(true);
+                Ingame.pack();
+                Ingame.setLocationRelativeTo(null);
+                this.dispose();
+            }
+            else{
+                putaran = 0;
+                waktu = 0;
+                MainMenu MainMenu = new MainMenu(id);
+                MainMenu.setVisible(true);
+                MainMenu.pack();
+                MainMenu.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
     /**
@@ -104,8 +122,9 @@ public class Ingame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public Ingame(String jenisLevel) {
-        this.jenisLevel=jenisLevel;
+    public Ingame(String jenisLevel,int id) {
+        this.jenisLevel = jenisLevel;
+        this.id = id;
         initComponents();
         ThreadWaktu threadWaktu = new ThreadWaktu();
         threadOn = true;
@@ -130,7 +149,6 @@ public class Ingame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -280,11 +298,8 @@ public class Ingame extends javax.swing.JFrame {
                 reshuffle(pipa[i]);
             }
             pipa[i].setPreferredSize(new java.awt.Dimension(70, 70));
-            
             jPanel2.add(pipa[i]);
-           
         }
-
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(50, 140, 680, 380);
@@ -313,26 +328,44 @@ public class Ingame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int jawab = JOptionPane.showOptionDialog(this, "Apakah anda yakin ingin keluar?", "Keluar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-    
-    if(jawab == JOptionPane.YES_OPTION){
-        threadOn = false;
-        JOptionPane.showMessageDialog(this, "Anda telah keluar dari game");
-        putaran = 0;
-        waktu = 0;
-        MainMenu MainMenu = new MainMenu();
-        MainMenu.setVisible(true);
-        MainMenu.pack();
-        MainMenu.setLocationRelativeTo(null);
-        this.dispose();
-    }
+        
+        if(jawab == JOptionPane.YES_OPTION){
+            threadOn = false;
+            try{
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+                Statement st = con.createStatement();
+                String query = "UPDATE profil SET jmain = jmain + 1 , jkalah = jkalah + 1 WHERE id = '"+id+"'";
+                st.executeUpdate(query);
+            }catch(Exception e){
+                System.out.println(e);
+            }
+            JOptionPane.showMessageDialog(this, "Anda telah keluar dari game");
+            putaran = 0;
+            waktu = 0;
+            MainMenu MainMenu = new MainMenu(id);
+            MainMenu.setVisible(true);
+            MainMenu.pack();
+            MainMenu.setLocationRelativeTo(null);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         threadOn = false;
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            String query = "UPDATE profil SET jmain = jmain + 1 , jkalah = jkalah + 1 WHERE id = '"+id+"'";
+            st.executeUpdate(query);
+        }catch(Exception e){
+                System.out.println(e);
+        }
         JOptionPane.showMessageDialog(this, "Anda telah mengulangi game");
         putaran = 0;
         waktu = 0;
-        Ingame Ingame = new Ingame(jenisLevel);
+        Ingame Ingame = new Ingame(jenisLevel,id);
         Ingame.setVisible(true);
         Ingame.pack();
         Ingame.setLocationRelativeTo(null);

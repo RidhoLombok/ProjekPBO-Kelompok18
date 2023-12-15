@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,7 +21,6 @@ public class Register extends javax.swing.JFrame {
      */
     public Register() {
         initComponents();
-        
     }
 
     /**
@@ -63,7 +67,7 @@ public class Register extends javax.swing.JFrame {
         jPanel1.add(jTextField1);
         jTextField1.setBounds(180, 90, 180, 23);
 
-        jPasswordField1.setFont(new java.awt.Font("Gill Sans MT", 1, 14)); // NOI18N
+
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -148,17 +152,46 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    
-    int jawab = JOptionPane.showOptionDialog(this, "Apakah anda yakin", "Register", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-    
-    if(jawab == JOptionPane.YES_OPTION){
-        JOptionPane.showMessageDialog(this, "Berhasil! Silahkan Login.");
-        Login login = new Login();
-        login.setVisible(true);
-        login.pack();
-        login.setLocationRelativeTo(null);
-        this.dispose();
-    }
+        //System.out.println(jTextField1.getText() + new String(jPasswordField1.getPassword()) + new String(jPasswordField2.getPassword()));
+        //System.out.println(Arrays.equals(jPasswordField1.getPassword(), jPasswordField2.getPassword()));
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
+            Statement st = con.createStatement();
+            if(jTextField1.getText().length()==0){
+                JOptionPane.showMessageDialog(this, "Username belum diisi","Perhatian",JOptionPane.WARNING_MESSAGE);
+                return;
+            }else if(jPasswordField1.getPassword().length<=4){
+                JOptionPane.showMessageDialog(this, "Password harus lebih dari 4 huruf dan angka","Perhatian",JOptionPane.WARNING_MESSAGE);
+                return;
+            }else if(Arrays.equals(jPasswordField1.getPassword(), jPasswordField2.getPassword())!=true){
+                JOptionPane.showMessageDialog(this, "Password tidak sama","Perhatian",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            int jawab = JOptionPane.showOptionDialog(this, "Apakah anda yakin", "Register", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            
+            if(jawab == JOptionPane.YES_OPTION){
+                int id = 0;
+                String query = "INSERT INTO user(username,password) VALUES ('"+jTextField1.getText()+"','"+new String(jPasswordField1.getPassword())+"')";
+                st.execute(query);
+                query = "SELECT * FROM user WHERE username = '"+jTextField1.getText()+"'";
+                ResultSet rs = st.executeQuery(query);
+                while(rs.next()){
+                    id = rs.getInt("id");
+                }
+                query = "INSERT INTO profil(id,jmain,jmenang,jkalah) VALUES ("+id+",'0','0','0')";
+                st.execute(query);
+                JOptionPane.showMessageDialog(this, "Berhasil! Silahkan Login.");
+                Login login = new Login();
+                login.setVisible(true);
+                login.pack();
+                login.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
