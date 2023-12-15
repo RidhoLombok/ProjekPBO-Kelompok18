@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LENOVO
@@ -128,7 +130,15 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        int jawab = JOptionPane.showOptionDialog(this, "Apakah anda ingin logout?", "Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if(jawab == JOptionPane.YES_OPTION){
+            JOptionPane.showMessageDialog(this, "Berhasil! Silahkan Login.");
+            Login login = new Login();
+            login.setVisible(true);
+            login.pack();
+            login.setLocationRelativeTo(null);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

@@ -6,24 +6,112 @@
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.*;
-
+import java.text.DecimalFormat;
 import java.util.Random;
 /**
  *
  * @author LENOVO
  */
 public class Ingame extends javax.swing.JFrame {
-
+    private String jenisLevel;
+    private static int putaran = 0;
+    private static double waktu = 0.0;
+    private static boolean threadOn = false;
+    static DecimalFormat decimalFormat = new DecimalFormat("0.0");
+    static JLabel pipa[] = new JLabel[45];
+    public static double getWaktu() {
+        return waktu;
+    }
+    public static void setWaktu(double waktu) {
+        Ingame.waktu = waktu;
+    }
+    public static boolean isThreadOn() {
+        return threadOn;
+    }
+    public static void setThreadOn(boolean threadOn) {
+        Ingame.threadOn = threadOn;
+    }
+    public static void aturWaktu(){
+        jLabel3.setText("Waktu : " + decimalFormat.format(waktu));
+    }
+    public static void reshuffle(JLabel pipa){
+        Random rand = new Random();
+        int random1 = rand.nextInt(2);
+        int random2 = rand.nextInt(4);
+        String png = "";
+        String text = "";
+        if(pipa.getText()=="startH" || pipa.getText()=="finishH" || pipa.getText()=="startV" || pipa.getText()=="finishV" || pipa.getText()=="wall"){
+            return;
+        }
+        else if(pipa.getText()=="ver" || pipa.getText()=="hor"){
+            if(random1==1){
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\verPipe.png";
+                text = "ver";
+            }else{
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\horPipe.png";
+                text = "hor";
+            }
+        }else if(pipa.getText()=="RD" || pipa.getText()=="LD" || pipa.getText()=="LU" || pipa.getText()=="RU"){
+            if(random2==1){
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RDPipe.png";
+                text = "RD";
+            }else if(random2==2){
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LDPipe.png";
+                text = "LD";
+            }else if(random2==3){
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LUPipe.png";
+                text = "LU";
+            }else{
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RUPipe.png";
+                text = "RU";
+            }
+        }
+        pipa.setIcon(new javax.swing.ImageIcon(png));
+        pipa.setText(text);
+    }
+    public static JLabel[] getallpipa(){
+        return pipa;
+    }
+    public void menang(){
+        JOptionPane.showMessageDialog(this, "Anda Menang");
+        ThreadCek.setCount();
+        int jawab = JOptionPane.showOptionDialog(this, "Apakah anda ingin mengulanginya?", "Main lagi?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if(jawab == JOptionPane.YES_OPTION){
+            //disini code untuk menyimpan record saat ulang
+            putaran = 0;
+            waktu = 0;
+            Ingame Ingame = new Ingame(jenisLevel);
+            Ingame.setVisible(true);
+            Ingame.pack();
+            Ingame.setLocationRelativeTo(null);
+            this.dispose();
+        }
+        else{
+            //disini code untuk menyimpan record saat keluar
+            putaran = 0;
+            waktu = 0;
+            MainMenu MainMenu = new MainMenu();
+            MainMenu.setVisible(true);
+            MainMenu.pack();
+            MainMenu.setLocationRelativeTo(null);
+            this.dispose();
+        }
+    }
     /**
      * Creates new form Ingame
      */
     public Ingame() {
         initComponents();
     }
-    String jenisLevel;
+    
     public Ingame(String jenisLevel) {
         this.jenisLevel=jenisLevel;
         initComponents();
+        ThreadWaktu threadWaktu = new ThreadWaktu();
+        threadOn = true;
+        ThreadCek threadCek = new ThreadCek(this);
+        threadWaktu.start();
+        threadCek.start();
     }
 
     /**
@@ -42,7 +130,7 @@ public class Ingame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        JLabel pipa[] = new JLabel[45];
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -65,13 +153,13 @@ public class Ingame extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Gill Sans MT", 1, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Nama_Level");
+        jLabel1.setText(jenisLevel);
         jPanel1.add(jLabel1);
         jLabel1.setBounds(180, 30, 440, 40);
 
         jLabel2.setFont(new java.awt.Font("Gill Sans MT", 1, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Putaran : 17");
+        jLabel2.setText("Putaran : " + putaran);
         jPanel1.add(jLabel2);
         jLabel2.setBounds(540, 20, 210, 40);
 
@@ -88,13 +176,13 @@ public class Ingame extends javax.swing.JFrame {
         for(int i=0;i<45;i++){
             String png = ""; String text = "";
             if(i==0){
-                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\startPipe.png";
-                text = "start";
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\startHPipe.png";
+                text = "startH";
             }else if(i==44){
-                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishPipe.png";
-                text = "finish";
+                png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishHPipe.png";
+                text = "finishH";
             }
-            else if(jenisLevel=="Level1"){
+            else if(jenisLevel=="Level 1"){
                 if((i>=41 && i<=43) || (i>=1 && i<=3) ){
                     png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\horPipe.png";
                     text = "hor";
@@ -111,6 +199,7 @@ public class Ingame extends javax.swing.JFrame {
                     png = "C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\whiteWall.png";
                     text = "wall";
                 }
+                
             }
             else if(jenisLevel=="Randomizer"){
                 Random rand = new Random();
@@ -148,32 +237,61 @@ public class Ingame extends javax.swing.JFrame {
             final int j = i;
             pipa[i].addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mousePressed(MouseEvent e) {
                     if(pipa[j].getText()=="ver"){
                         pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\horPipe.png"));
                         pipa[j].setText("hor");
-                    }
-                    else if(pipa[j].getText()=="hor"){
+                    }else if(pipa[j].getText()=="hor"){
                         pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\verPipe.png"));
                         pipa[j].setText("ver");
+                    }else if(pipa[j].getText()=="RD"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RUPipe.png"));
+                        pipa[j].setText("RU");
+                    }else if(pipa[j].getText()=="RU"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LUPipe.png"));
+                        pipa[j].setText("LU");
+                    }else if(pipa[j].getText()=="LU"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\LDPipe.png"));
+                        pipa[j].setText("LD");
+                    }else if(pipa[j].getText()=="LD"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\RDPipe.png"));
+                        pipa[j].setText("RD");
+                    }else if(pipa[j].getText()=="startV"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\startHPipe.png"));
+                        pipa[j].setText("startH");
+                    }else if(pipa[j].getText()=="startH"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\startVPipe.png"));
+                        pipa[j].setText("startV");
+                    }else if(pipa[j].getText()=="finishV"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishHPipe.png"));
+                        pipa[j].setText("finishH");
+                    }else if(pipa[j].getText()=="finishH"){
+                        pipa[j].setIcon(new javax.swing.ImageIcon("C:\\Users\\LENOVO\\OneDrive\\Documents\\NetBeansProjects\\Pipegame\\src\\main\\icon\\finishVPipe.png"));
+                        pipa[j].setText("finishV");
                     }
-                    else{
-                        
+                    if(pipa[j].getText()!="wall"){
+                        putaran++;
                     }
+                    jLabel2.setText("Putaran : " + putaran);
                 }
             });
             pipa[i].setText(text);
+            if(jenisLevel!="Randomizer"){
+                reshuffle(pipa[i]);
+            }
             pipa[i].setPreferredSize(new java.awt.Dimension(70, 70));
+            
             jPanel2.add(pipa[i]);
+           
         }
-        
+
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(50, 140, 680, 380);
 
         jLabel3.setFont(new java.awt.Font("Gill Sans MT", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Waktu : 00:25.98");
+        jLabel3.setText("Waktu : " + waktu);
         jPanel1.add(jLabel3);
         jLabel3.setBounds(540, 60, 210, 40);
 
@@ -197,6 +315,10 @@ public class Ingame extends javax.swing.JFrame {
         int jawab = JOptionPane.showOptionDialog(this, "Apakah anda yakin ingin keluar?", "Keluar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
     
     if(jawab == JOptionPane.YES_OPTION){
+        threadOn = false;
+        JOptionPane.showMessageDialog(this, "Anda telah keluar dari game");
+        putaran = 0;
+        waktu = 0;
         MainMenu MainMenu = new MainMenu();
         MainMenu.setVisible(true);
         MainMenu.pack();
@@ -206,6 +328,10 @@ public class Ingame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        threadOn = false;
+        JOptionPane.showMessageDialog(this, "Anda telah mengulangi game");
+        putaran = 0;
+        waktu = 0;
         Ingame Ingame = new Ingame(jenisLevel);
         Ingame.setVisible(true);
         Ingame.pack();
@@ -253,9 +379,8 @@ public class Ingame extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private static javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private JLabel pipa[];
     // End of variables declaration//GEN-END:variables
 }

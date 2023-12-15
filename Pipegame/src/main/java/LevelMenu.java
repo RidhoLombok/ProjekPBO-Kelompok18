@@ -80,7 +80,7 @@ public class LevelMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Ingame Ingame = new Ingame("Level1");
+        Ingame Ingame = new Ingame("Level 1");
         Ingame.setVisible(true);
         Ingame.pack();
         Ingame.setLocationRelativeTo(null);
