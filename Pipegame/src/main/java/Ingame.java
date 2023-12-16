@@ -15,7 +15,7 @@ import java.util.Random;
  *
  * @author LENOVO
  */
-public class Ingame extends javax.swing.JFrame {
+public class Ingame extends javax.swing.JFrame implements win{
     private int id;
     private String jenisLevel;
     private static int putaran = 0;
