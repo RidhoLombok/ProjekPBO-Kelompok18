@@ -29,12 +29,14 @@ public class Profile extends javax.swing.JFrame {
             Statement st = con.createStatement();
             String query = "SELECT * FROM user,profil WHERE user.id = '"+id+"'";
             ResultSet rs = st.executeQuery(query);
-            while(rs.next()){
+            int count = id - 10000;
+            while(rs.next() && count != 0){
                 username = rs.getString("username");
                 jmain = rs.getInt("jmain");
                 jmenang = rs.getInt("jmenang");
                 jkalah = rs.getInt("jkalah");
                 rlevel = rs.getInt("rlevel");
+                count--;
             }
         }catch(Exception e){
             System.out.println(e);
