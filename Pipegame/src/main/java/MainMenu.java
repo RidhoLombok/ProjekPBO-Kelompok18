@@ -29,7 +29,7 @@ public class MainMenu extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
             Statement st = con.createStatement();
-            String query = "SELECT * FROM user WHERE id = '"+id+"'";
+            String query = "SELECT * FROM user WHERE user_id = '"+id+"'";
             ResultSet rs = st.executeQuery(query);
             while(rs.next()){
                 username = rs.getString("username");

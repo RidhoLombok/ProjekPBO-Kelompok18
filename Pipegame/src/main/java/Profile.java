@@ -27,16 +27,14 @@ public class Profile extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
             Statement st = con.createStatement();
-            String query = "SELECT * FROM user,profil WHERE user.id = '"+id+"'";
+            String query = "SELECT * FROM user WHERE user_id = '"+id+"'";
             ResultSet rs = st.executeQuery(query);
-            int count = id - 10000;
-            while(rs.next() && count != 0){
+            while(rs.next()){
                 username = rs.getString("username");
                 jmain = rs.getInt("jmain");
                 jmenang = rs.getInt("jmenang");
                 jkalah = rs.getInt("jkalah");
                 rlevel = rs.getInt("rlevel");
-                count--;
             }
         }catch(Exception e){
             System.out.println(e);

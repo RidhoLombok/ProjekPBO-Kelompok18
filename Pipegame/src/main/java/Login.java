@@ -144,7 +144,7 @@ public class Login extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(query);
             while(rs.next()){
                 password = rs.getString("password");
-                id = rs.getInt("id");
+                id = rs.getInt("user_id");
                 ketemu = 1;
             }
             if(password.equals(new String(jPasswordField1.getPassword())) && ketemu == 1){

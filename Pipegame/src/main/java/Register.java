@@ -171,15 +171,7 @@ public class Register extends javax.swing.JFrame {
             int jawab = JOptionPane.showOptionDialog(this, "Apakah anda yakin", "Register", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
             
             if(jawab == JOptionPane.YES_OPTION){
-                int id = 0;
                 String query = "INSERT INTO user(username,password) VALUES ('"+jTextField1.getText()+"','"+new String(jPasswordField1.getPassword())+"')";
-                st.execute(query);
-                query = "SELECT * FROM user WHERE username = '"+jTextField1.getText()+"'";
-                ResultSet rs = st.executeQuery(query);
-                while(rs.next()){
-                    id = rs.getInt("id");
-                }
-                query = "INSERT INTO profil(id,jmain,jmenang,jkalah) VALUES ("+id+",'0','0','0')";
                 st.execute(query);
                 JOptionPane.showMessageDialog(this, "Berhasil! Silahkan Login.");
                 Login login = new Login();

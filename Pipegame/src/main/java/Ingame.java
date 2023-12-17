@@ -15,7 +15,7 @@ import java.util.Random;
  *
  * @author LENOVO
  */
-public class Ingame extends javax.swing.JFrame implements win{
+public class Ingame extends javax.swing.JFrame implements Win{
     private int id;
     private String jenisLevel;
     private static int putaran = 0;
@@ -84,12 +84,12 @@ public class Ingame extends javax.swing.JFrame implements win{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
             Statement st = con.createStatement();
-            String query = "INSERT INTO record(id,jenislevel,putaran,waktu,ppipa,nilai) VALUES ('"+id+"','"+jenisLevel+"','"+putaran+"','"+decimalFormat.format(waktu)+"','"+panjang+"','"+nilai+"')";
+            String query = "INSERT INTO record(jenislevel,putaran,waktu,ppipa,nilai,user_id) VALUES ('"+jenisLevel+"','"+putaran+"','"+decimalFormat.format(waktu)+"','"+panjang+"','"+nilai+"','"+id+"')";
             st.executeUpdate(query);
-            query = "UPDATE profil SET jmain = jmain + 1 , jmenang = jmenang + 1 WHERE id = '"+id+"'";
+            query = "UPDATE user SET jmain = jmain + 1 , jmenang = jmenang + 1 WHERE user_id = '"+id+"'";
             st.executeUpdate(query);
             if(jenisLevel == "Level 1"){
-                query = "UPDATE profil SET rlevel = 1 WHERE id = '"+id+"'";
+                query = "UPDATE user SET rlevel = 1 WHERE user_id = '"+id+"'";
                 st.executeUpdate(query);
             }
             int jawab = JOptionPane.showOptionDialog(this, "Apakah anda ingin mengulanginya?", "Main lagi?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -335,7 +335,7 @@ public class Ingame extends javax.swing.JFrame implements win{
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
                 Statement st = con.createStatement();
-                String query = "UPDATE profil SET jmain = jmain + 1 , jkalah = jkalah + 1 WHERE id = '"+id+"'";
+                String query = "UPDATE user SET jmain = jmain + 1 , jkalah = jkalah + 1 WHERE user_id = '"+id+"'";
                 st.executeUpdate(query);
             }catch(Exception e){
                 System.out.println(e);
@@ -357,7 +357,7 @@ public class Ingame extends javax.swing.JFrame implements win{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
             Statement st = con.createStatement();
-            String query = "UPDATE profil SET jmain = jmain + 1 , jkalah = jkalah + 1 WHERE id = '"+id+"'";
+            String query = "UPDATE user SET jmain = jmain + 1 , jkalah = jkalah + 1 WHERE user_id = '"+id+"'";
             st.executeUpdate(query);
         }catch(Exception e){
                 System.out.println(e);

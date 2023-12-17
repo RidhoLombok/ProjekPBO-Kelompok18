@@ -35,7 +35,7 @@ public class Leaderboard extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
             Statement st = con.createStatement();
-            String query = "SELECT username,nilai FROM record, user WHERE user.id = record.id AND jenislevel = 'Level 1' ORDER BY nilai DESC limit 13";
+            String query = "SELECT username,nilai FROM record, user WHERE user.user_id = record.user_id AND jenislevel = 'Level 1' ORDER BY nilai DESC limit 13";
             ResultSet rs = st.executeQuery(query);
             while(rs.next()){
                 username[i] = rs.getString("username");
@@ -44,7 +44,7 @@ public class Leaderboard extends javax.swing.JFrame {
             }
             level1Count = i;
             i = 0;
-            query = "SELECT username,nilai FROM record, user WHERE user.id = record.id AND jenislevel = 'Randomizer' ORDER BY nilai DESC limit 13";
+            query = "SELECT username,nilai FROM record, user WHERE user.user_id = record.user_id AND jenislevel = 'Randomizer' ORDER BY nilai DESC limit 13";
             rs = st.executeQuery(query);
             while(rs.next()){
                 usernameR[i] = rs.getString("username");
