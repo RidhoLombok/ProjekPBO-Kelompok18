@@ -2,169 +2,160 @@ import javax.swing.JLabel;
 
 public class ThreadCek extends Thread{
     private Ingame ingame;
-    private static int count = 0;
     public ThreadCek(Ingame ingame){
         this.ingame=ingame;
     }
-    public static void setCount(){
-        count=0;
-    }
     public void run(){
-        JLabel pipa[] = new JLabel[45];
-        JLabel current, currentB;
-        int panjang = 0;
-        boolean ketemu = false;
-        while (ketemu!=true && Ingame.isThreadOn()) {
-            panjang = 0;
-            int currentNumber = 0;
-            int currentBNumber = 0;
-            pipa = Ingame.getallpipa();
-            current = currentB = pipa[0];
-            while(current.getText()!="finishH" || current.getText()!="finishV"){//tetap true walaupun salah satu true
-                if(currentB.getText()=="finishH" || currentB.getText()=="finishV"){
-                    ketemu = true;
-                    break;
-                }else if(current.getText()=="finishV"){
-                    if(currentBNumber==currentNumber-9){
-                        currentB=current;
-                        currentBNumber=currentNumber;
+        JLabel pipa[] = new JLabel[45];// untuk mengambil seluruh label pipa/tembok dari class Ingame
+        JLabel current, currentB; // untuk pengecek jalur pipa, currentB adalah current before
+        int panjang = 0;// untuk panjang pipa dari start hingga finish
+        boolean ketemu = false;// untuk menyatakan ketemu taua tidak
+        while (ketemu!=true && Ingame.isThreadOn()) {// selama belum ketemu dan thread masuh nyala
+            panjang = 0; // untuk diatur kembali menjadi 0
+            int currentNumber = 0;// untuk nomor index dari current
+            int currentBNumber = 0;// untuk nomor index dari current before / sebelum
+            pipa = Ingame.getallpipa();// mengambil seluruh pipa dan tembok
+            current = currentB = pipa[0];// mengatur lokasi ke 0 atau start semua current
+            while(true){//melakukan perulangan tanpa syarat
+                if(currentB.getText()=="finishH" || currentB.getText()=="finishV"){// jika current before di pipa finish
+                    ketemu = true;// KETEMU
+                    break;// pengecekan selesai karena sudah ketemu
+                }else if(current.getText()=="finishV"){// jika current di pipa finish ver
+                    if(currentBNumber==currentNumber-9){// jika current before berada di atas current
+                        currentB=current;// current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
                     }
                     else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="finishH" ){
-                    if(currentBNumber==currentNumber-1){
-                        currentB=current;
-                        currentBNumber=currentNumber;
+                }else if(current.getText()=="finishH" ){// jika current di pipa finish hor
+                    if(currentBNumber==currentNumber-1){// jika current before berada di kiri current
+                        currentB=current;// current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
                     }
                     else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="startH"){
-                    currentB=current;
-                    currentBNumber=currentNumber;
-                    currentNumber+=1;
-                    current=pipa[currentNumber];
-                }else if(current.getText()=="startV"){
-                    currentB=current;
-                    currentBNumber=currentNumber;
-                    currentNumber+=9;
-                    current=pipa[currentNumber];
-                }else if(current.getText()=="ver"){
-                    if((currentNumber >= 0 && currentNumber <= 8) || (currentNumber >= 36 && currentNumber <= 44)){
-                        break;
-                    }else if(currentBNumber==currentNumber-9){//jika CurrB di atas Curr
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber+=9;//ke bawah
-                        current=pipa[currentNumber];
-                    }else if(currentBNumber==currentNumber+9){//jika CurrB di bawah Curr
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber-=9;//ke atas
-                        current=pipa[currentNumber];
+                }else if(current.getText()=="startH"){// jika current di pipa start hor
+                    currentB=current;// current before ke posisi current
+                    currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                    currentNumber+=1;// nomor indeks current ditambah 1 sehingga ke kanan
+                    current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                }else if(current.getText()=="startV"){// jika current di pipa start ver
+                    currentB=current;// current before ke posisi current
+                    currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                    currentNumber+=9;// nomor indeks current ditambah 9 sehingga ke bawah
+                    current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                }else if(current.getText()=="ver"){// jika current di pipa ver
+                    if((currentNumber >= 0 && currentNumber <= 8) || (currentNumber >= 36 && currentNumber <= 44)){//jika di ujung atas atau bawah
+                        break;// ulangi pengecekan
+                    }else if(currentBNumber==currentNumber-9){// jika current before berada di atas current
+                        currentB=current;// current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber+=9;// nomor indeks current ditambah 9 sehingga ke bawah// ke bawah
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                    }else if(currentBNumber==currentNumber+9){// jika current before berada di bawah current
+                        currentB=current;// current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber-=9;// nomor indeks current dikurang 9 sehingga ke atas
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
                     }else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="hor"){
-                    if(currentNumber % 9 == 0 || currentNumber % 9 == 8){
-                        break;
-                    }else if(currentBNumber==currentNumber-1){//jika CurrB di kiri Curr
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber+=1;//ke kanan
-                        current=pipa[currentNumber];
-                    }else if(currentBNumber==currentNumber+1){//jika CurrB di kanan Curr
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber-=1;//ke kiri
-                        current=pipa[currentNumber];
+                }else if(current.getText()=="hor"){// jika current di pipa hor
+                    if(currentNumber % 9 == 0 || currentNumber % 9 == 8){// jika di ujung kiri atau kanan
+                        break;// ulangi pengecekan
+                    }else if(currentBNumber==currentNumber-1){// jika current before berada di kiri current
+                        currentB=current;// current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber+=1;// nomor indeks current ditambah 1 sehingga ke kanan
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru// mengatur current ke posisi indeks current baru
+                    }else if(currentBNumber==currentNumber+1){// jika current before berada di kanan current
+                        currentB=current;// current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber-=1;// nomor indeks current dikurang 1 sehingga ke kiri
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
                     }else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="RD"){
-                    if((currentNumber >= 36 && currentNumber <= 44) || currentNumber % 9 == 8){
-                        break;
-                    }else if(currentBNumber==currentNumber+9){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber+=1;
-                        current=pipa[currentNumber];
-                    }else if(currentBNumber==currentNumber+1){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber+=9;
-                        current=pipa[currentNumber];
+                }else if(current.getText()=="RD"){// jika current di pipa belok right down
+                    if((currentNumber >= 36 && currentNumber <= 44) || currentNumber % 9 == 8){// jika di ujung kanan atau bawah
+                        break;// ulangi pengecekan
+                    }else if(currentBNumber==currentNumber+9){// jika current before berada di bawah current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber+=1;// nomor indeks current ditambah 1 sehingga ke kanan
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                    }else if(currentBNumber==currentNumber+1){// jika current before berada di kanan current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber+=9;// nomor indeks current ditambah 9 sehingga ke bawah
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
                     }else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="LD"){
-                    if(currentNumber % 9 == 0 || (currentNumber >= 36 && currentNumber <= 44)){
-                        break;
-                    }else if(currentBNumber==currentNumber+9){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber-=1;
-                        current=pipa[currentNumber];
-                    }else if(currentBNumber==currentNumber-1){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber+=9;
-                        current=pipa[currentNumber];
+                }else if(current.getText()=="LD"){// jika current di pipa belok left down
+                    if(currentNumber % 9 == 0 || (currentNumber >= 36 && currentNumber <= 44)){// jika di ujung kiri atau bawah
+                        break;// ulangi pengecekan
+                    }else if(currentBNumber==currentNumber+9){// jika current before berada di bawah current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber-=1;// nomor indeks current dikurang 1 sehingga ke kiri
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                    }else if(currentBNumber==currentNumber-1){// jika current before berada di kiri current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber+=9;// nomor indeks current ditambah 9 sehingga ke bawah
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
                     }else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="LU"){
-                    if(currentNumber % 9 == 0 || (currentNumber >= 0 && currentNumber <= 8)){
-                        break;
-                    }else if(currentBNumber==currentNumber-9){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber-=1;
-                        current=pipa[currentNumber];
-                    }else if(currentBNumber==currentNumber-1){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber-=9;
-                        current=pipa[currentNumber];
+                }else if(current.getText()=="LU"){// jika current di pipa belok left up
+                    if(currentNumber % 9 == 0 || (currentNumber >= 0 && currentNumber <= 8)){// jika di unjung kiri atau atas
+                        break;// ulangi pengecekan
+                    }else if(currentBNumber==currentNumber-9){//jika current before di atas current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber-=1;// nomor indeks current dikurang 1 sehingga ke kiri
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                    }else if(currentBNumber==currentNumber-1){// jika current before berada di kiri current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber-=9;// nomor indeks current dikurang 9 sehingga ke atas
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
                     }else{
-                        break;
+                        break;// ulangi pengecekan
                     }
-                }else if(current.getText()=="RU"){
-                    if((currentNumber >= 0 && currentNumber <= 8) || currentNumber % 9 == 8){
-                        break;
-                    }else if(currentBNumber==currentNumber-9){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber+=1;
-                        current=pipa[currentNumber];
-                    }else if(currentBNumber==currentNumber+1){
-                        currentB=current;
-                        currentBNumber=currentNumber;
-                        currentNumber-=9;
-                        current=pipa[currentNumber];
+                }else if(current.getText()=="RU"){// jika current di pipa belok right up
+                    if((currentNumber >= 0 && currentNumber <= 8) || currentNumber % 9 == 8){// jika di ujung kanan atau atas
+                        break;// ulangi pengecekan
+                    }else if(currentBNumber==currentNumber-9){//jika current before di atas current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber+=1;// nomor indeks current ditambah 1 sehingga ke kanan
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
+                    }else if(currentBNumber==currentNumber+1){// jika current before berada di kanan current
+                        currentB=current;//current before ke posisi current
+                        currentBNumber=currentNumber;// nomor indeks current before sama dengan current
+                        currentNumber-=9;// nomor indeks current dikurang 9 sehingga ke atas
+                        current=pipa[currentNumber];// mengatur current ke posisi indeks current baru
                     }else{
-                        break;
+                        break;// ulangi pengecekan
                     }
                 }else if(current.getText()=="wall"){
-                    break;
+                    break;// ulangi pengecekan
                 }
                 panjang++;
             }
-            
             try{
-                Thread.sleep(100);
+                Thread.sleep(100);// setiap 0.1 detik diulang
             }catch(Exception e) {
             }
         }
-        if(Ingame.isThreadOn()){
-            Ingame.setThreadOn(false);
-            count++;
+        if(Ingame.isThreadOn()){// jika thread masih menyala di class Ingame
+            Ingame.setThreadOn(false);// matikan
             ingame.dispose();
-            if(count==1){
-                ingame.menang(panjang);
-            }
+            ingame.menang(panjang);//memanggil menang dengan membawa panjang dari pipanya
         }
-        //System.out.println("count "+ count);memastikan semua thread mati
     }
 }
