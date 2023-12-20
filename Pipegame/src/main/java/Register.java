@@ -180,7 +180,7 @@ public class Register extends javax.swing.JFrame {
                 login.setLocationRelativeTo(null);
                 this.dispose();
             }
-        }catch(Exception e){
+        }catch(Exception e){// jika error lakukan ini
             System.out.println(e);
         }
         

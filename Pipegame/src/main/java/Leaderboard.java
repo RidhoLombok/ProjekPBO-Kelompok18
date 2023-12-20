@@ -32,6 +32,7 @@ public class Leaderboard extends javax.swing.JFrame {
         String username[] = new String[13];
         String usernameR[] = new String[13];
         try{
+            //melakukan koneksi database
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pipegame?zeroDateTimeBehavior=CONVERT_TO_NULL","root","");
             Statement st = con.createStatement();
@@ -53,7 +54,7 @@ public class Leaderboard extends javax.swing.JFrame {
             }
             randomizerCount = i;
 
-        }catch(Exception e){
+        }catch(Exception e){// jika error lakukan ini
             System.out.println(e);
         }
 

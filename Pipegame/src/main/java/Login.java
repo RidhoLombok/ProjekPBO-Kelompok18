@@ -158,7 +158,7 @@ public class Login extends javax.swing.JFrame {
             else{
                 JOptionPane.showMessageDialog(this, "Password salah atau username tidak ditemukan","Perhatian",JOptionPane.WARNING_MESSAGE);
             }
-        }catch(Exception e){
+        }catch(Exception e){// jika error lakukan ini
             System.out.println(e);
         }
         

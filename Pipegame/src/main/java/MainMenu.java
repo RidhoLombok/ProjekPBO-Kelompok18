@@ -34,7 +34,7 @@ public class MainMenu extends javax.swing.JFrame {
             while(rs.next()){
                 username = rs.getString("username");
             }
-        }catch(Exception e){
+        }catch(Exception e){// jika error lakukan ini
             System.out.println(e);
         }
         initComponents();

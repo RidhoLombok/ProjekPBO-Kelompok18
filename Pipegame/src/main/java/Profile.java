@@ -36,7 +36,7 @@ public class Profile extends javax.swing.JFrame {
                 jkalah = rs.getInt("jkalah");
                 rlevel = rs.getInt("rlevel");
             }
-        }catch(Exception e){
+        }catch(Exception e){// jika error lakukan ini
             System.out.println(e);
         }
         initComponents();
