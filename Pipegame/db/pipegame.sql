@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Des 2023 pada 03.23
+-- Waktu pembuatan: 20 Des 2023 pada 06.17
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -85,7 +85,17 @@ INSERT INTO `record` (`record_id`, `jenislevel`, `putaran`, `waktu`, `ppipa`, `n
 (41, 'Level 1', 7, 2.6, 13, 12420, 10),
 (42, 'Randomizer', 18, 8, 17, 12050, 10),
 (43, 'Randomizer', 8, 3.7, 15, 12765, 10),
-(44, 'Level 1', 6, 2.4, 13, 12530, 10);
+(44, 'Level 1', 6, 2.4, 13, 12530, 10),
+(45, 'Level 1', 7, 12.5, 13, 11925, 1),
+(46, 'Randomizer', 10, 11.4, 13, 11680, 1),
+(47, 'Level 1', 10, 4, 13, 12050, 6),
+(48, 'Randomizer', 15, 8, 15, 11850, 6),
+(49, 'Level 1', 7, 61.1, 13, 9495, 6),
+(50, 'Level 1', 5, 3.1, 13, 12595, 6),
+(51, 'Level 1', 11, 3.7, 13, 11965, 6),
+(52, 'Level 1', 9, 3.1, 13, 12195, 6),
+(53, 'Randomizer', 14, 4.7, 13, 11615, 6),
+(54, 'Level 1', 9, 3.4, 13, 12180, 6);
 
 -- --------------------------------------------------------
 
@@ -108,16 +118,17 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `rlevel`, `jmain`, `jmenang`, `jkalah`) VALUES
-(1, 'Ridho', 'ridho', 1, 9, 4, 5),
+(1, 'Ridho', 'ridho', 1, 13, 6, 7),
 (2, 'Budiman', '12345', 1, 4, 3, 1),
 (3, 'Celine', '54321', 1, 6, 4, 2),
 (4, 'Gamer01', '67890', 1, 8, 6, 2),
 (5, 'IndoLover96', '09876', 1, 5, 5, 0),
-(6, 'Alif', 'aliff', 1, 15, 9, 6),
+(6, 'Alif', 'aliff', 1, 54, 17, 37),
 (7, '(OwO)//hi', 'qwert', 1, 5, 3, 2),
 (8, ':) :D :o :O :P', 'trewq', 1, 4, 4, 0),
-(9, 'Furina', 'Macaroni', 0, 2, 1, 1),
-(10, 'Nahida', 'radish', 1, 6, 5, 1);
+(9, 'Sanzo', 'ninja', 0, 2, 1, 1),
+(10, 'CubeX', 'mystery', 1, 6, 5, 1),
+(11, 'rt', '12345', 0, 0, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -143,13 +154,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `record`
 --
 ALTER TABLE `record`
-  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
